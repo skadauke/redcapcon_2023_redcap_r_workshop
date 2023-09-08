@@ -6,13 +6,13 @@ editor: visual
 
 ## Quarto
 
-Quarto (the successor of "R Markdown") enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Quarto (the successor of **R Markdown**) enables you to weave together *human-readable content* and *executable code* in a single document. We will use Posit Cloud to work with Quarto documents that contain exercises for the session.
 
 ## Running Code
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code.
+When you click the **green triangle** on the top right of the **code chunk**, the code gets run, and the result (if any) will appear underneath.
 
-You can embed code like this:
+Here is a code chunk that asks R to calculate the sum of `1 + 1`. Go ahead and run it!
 
 ```{r}
 1 + 1

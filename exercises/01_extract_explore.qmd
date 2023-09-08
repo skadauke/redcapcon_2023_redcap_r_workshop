@@ -6,6 +6,10 @@ editor: visual
 
 ## Extracting Data from REDCap using REDCapTidieR
 
+In this exercise, we will download REDCap data using REDCapTidier (as opposed to REDCapR) and then explore that data.
+
+The following code chunk loads the REDCapTidieR package and then uses the `read_redcap()` function to extract data from a REDCap database into an object named `redcart`.
+
 ```{r}
 library(REDCapTidieR)
 
