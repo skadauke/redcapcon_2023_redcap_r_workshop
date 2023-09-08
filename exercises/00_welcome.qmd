@@ -1,0 +1,33 @@
+---
+title: "Welcome to the REDCap Workshop!"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto (the successor of "R Markdown") enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. 
+
+You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+The following code chunk will connect to a REDCap database and download its data into an object called `my_redcap_data`. Run the code chunk.
+
+```{r}
+library(REDCapR)
+
+redcap_uri <- "https://redcap.chop.edu/api/"
+
+## TODO: use a secure creds file instead of hardcoding this
+token <- "37BCFC38D45F10C47EAF4D8B97BFC32F"
+
+## TODO: Right now this has lots of empty rows. Come up with a better solution.
+my_redcap_data <- redcap_read_oneshot(redcap_uri, token, forms = "demographics")$data
+```
