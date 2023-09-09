@@ -1,0 +1,52 @@
+---
+title: "01a_redcapr"
+format: html
+editor: visual
+---
+
+## Extracting Data from REDCap using REDCapR
+
+For the first 10 min, we will download REDCap data using [REDCapR](https://ouhscbbmc.github.io/REDCapR).
+
+### Install latest version of REDCapR
+
+Let's install with the newest version of REDCapR from GitHub.
+
+```{r}
+if (packageVersion("REDCapR") < "1.1.9005") {
+  install.packages("remotes")
+  remotes::install_github("OuhscBbmc/REDCapR")
+}
+```
+
+### Retrieve Secure Token
+
+We'll discuss tokens in more depth at the end of the workshop. For now, know that a "token" is a secret value that serves as your personal password to a specific REDCap project.
+
+```{r}
+# path_credential <- "../data-private/credentials.csv"
+path_credential <- "redcapcon_2023_redcap_r_workshop/data-private/credentials.csv"
+credential  <- REDCapR::retrieve_credential_local(path_credential, 1L)
+credential
+```
+
+### Peek at Variables, Events, & Instruments
+
+Here's a project of fake data that Stephan created to mimic the CAR-T investigation. The first snippet reveals info from the 368 variables.\
+The second reveals info about the combinations of events & instruments.
+
+```{r}
+REDCapR::redcap_metadata_read(
+  redcap_uri  = credential$redcap_uri,
+  token       = credential$token
+)$data
+
+REDCapR::redcap_event_instruments(
+  redcap_uri  = credential$redcap_uri,
+  token       = credential$token
+)$data
+```
+
+If important details are obscured, use `View()` to see things in a nice scrollable table inside RStudio:
+
+\`\`\`r View(REDCapR::redcap_metadata_read( redcap_uri = credential$redcap_uri,  token = credential$token )\$data)
