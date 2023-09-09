@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Extracting and Exploring REDCap Data in R</title>
+<title>01a_redcapr</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,16 +57,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="01_extract_explore_files/libs/clipboard/clipboard.min.js"></script>
-<script src="01_extract_explore_files/libs/quarto-html/quarto.js"></script>
-<script src="01_extract_explore_files/libs/quarto-html/popper.min.js"></script>
-<script src="01_extract_explore_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="01_extract_explore_files/libs/quarto-html/anchor.min.js"></script>
-<link href="01_extract_explore_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="01_extract_explore_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="01_extract_explore_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="01_extract_explore_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="01_extract_explore_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="01a_redcapr_files/libs/clipboard/clipboard.min.js"></script>
+<script src="01a_redcapr_files/libs/quarto-html/quarto.js"></script>
+<script src="01a_redcapr_files/libs/quarto-html/popper.min.js"></script>
+<script src="01a_redcapr_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="01a_redcapr_files/libs/quarto-html/anchor.min.js"></script>
+<link href="01a_redcapr_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="01a_redcapr_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="01a_redcapr_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="01a_redcapr_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="01a_redcapr_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Extracting and Exploring REDCap Data in R</h1>
+<h1 class="title">01a_redcapr</h1>
 </div>
 
 
@@ -94,71 +94,111 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="extracting-data-from-redcap-using-redcaptidier" class="level2">
-<h2 class="anchored" data-anchor-id="extracting-data-from-redcap-using-redcaptidier">Extracting Data from REDCap using REDCapTidieR</h2>
-<p>In this exercise, we will download REDCap data using REDCapTidier (as opposed to REDCapR) and then explore that data using the Posit IDE.</p>
+<section id="extracting-data-from-redcap-using-redcapr" class="level2">
+<h2 class="anchored" data-anchor-id="extracting-data-from-redcap-using-redcapr">Extracting Data from REDCap using REDCapR</h2>
+<p>For the first 10 min, we will download REDCap data using <a href="https://ouhscbbmc.github.io/REDCapR">REDCapR</a>.</p>
+<section id="install-latest-version-of-redcapr" class="level3">
+<h3 class="anchored" data-anchor-id="install-latest-version-of-redcapr">Install latest version of REDCapR</h3>
+<p>Let’s install with the newest version of REDCapR from GitHub.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(REDCapTidieR)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load credentials from CSV file</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>creds <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(<span class="st">"../data-private/credentials.csv"</span>, <span class="dv">1</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>uri <span class="ot">&lt;-</span> creds<span class="sc">$</span>redcap_uri</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>token <span class="ot">&lt;-</span> creds<span class="sc">$</span>token</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the CAR-T cell REDCap data into an object named "redcart"</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>redcart <span class="ot">&lt;-</span> <span class="fu">read_redcap</span>(uri, token)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Show me redcart!</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>redcart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">packageVersion</span>(<span class="st">"REDCapR"</span>) <span class="sc">&lt;</span> <span class="st">"1.1.9005"</span>) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"remotes"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"OuhscBbmc/REDCapR"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="retrieve-secure-token" class="level3">
+<h3 class="anchored" data-anchor-id="retrieve-secure-token">Retrieve Secure Token</h3>
+<p>We’ll discuss tokens in more depth at the end of the workshop. For now, know that a “token” is a secret value that serves as your personal password to a specific REDCap project.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>path_credential <span class="ot">&lt;-</span> <span class="st">"../data-private/credentials.csv"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># path_credential &lt;- "redcapcon_2023_redcap_r_workshop/data-private/credentials.csv"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>credential  <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(path_credential, 1L)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>credential</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 18 × 10
-   redcap_form_name  redcap_form_label redcap_data redcap_metadata redcap_events
-   &lt;chr&gt;             &lt;chr&gt;             &lt;list&gt;      &lt;list&gt;          &lt;list&gt;       
- 1 infusion_sequence Infusion Sequence &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
- 2 visit_confirmati… Visit Confirmati… &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
- 3 demographics      Demographics      &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
- 4 cohort_phase_ass… Cohort &amp; Phase A… &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
- 5 medical_history   Medical History   &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
- 6 diagnosis_extent… Diagnosis &amp; Exte… &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
- 7 eligibility       Eligibility       &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
- 8 consent           Consent           &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
- 9 physical_exam     Physical Exam     &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
-10 vital_signs       Vital Signs       &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
-11 hematology        Hematology        &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
-12 chemistry         Chemistry         &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
-13 disease_assessme… Disease Assessme… &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
-14 chemotherapy      Chemotherapy      &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
-15 infusion          Infusion          &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
-16 infusion_vital_s… Infusion Vital S… &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
-17 adverse_events    Adverse Events    &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
-18 end_of_study      End of Study      &lt;tibble&gt;    &lt;tibble&gt;        &lt;tibble&gt;     
-# ℹ 5 more variables: structure &lt;chr&gt;, data_rows &lt;int&gt;, data_cols &lt;int&gt;,
-#   data_size &lt;lbstr_by&gt;, data_na_pct &lt;formttbl&gt;</code></pre>
+<pre><code>$redcap_uri
+[1] "https://redcap.chop.edu/api/"
+
+$username
+[1] "myusername"
+
+$project_id
+[1] 1
+
+$token
+[1] "37BCFC38D45F10C47EAF4D8B97BFC32F"
+
+$comment
+[1] "CAR-T cell trials"</code></pre>
 </div>
 </div>
 </section>
-<section id="exploring-the-redcaptidier-supertibble" class="level2">
-<h2 class="anchored" data-anchor-id="exploring-the-redcaptidier-supertibble">Exploring the REDCapTidieR Supertibble</h2>
-<p>Take a look at the <em>Environment</em> pane to the right. Note that there is an object named <code>redcart</code>. This is the <strong>supertibble</strong> you just created inside of R’s memory. (If you don’t see <code>redcart</code>, try running the code chunk above again).</p>
-<p>A <strong>tibble</strong> (or <strong>data frame</strong>) is a tabular data structure with rows and columns, similar to a SQL database or an Excel sheet. A <strong>supertibble</strong> is a tibble that contains tibbles.</p>
-<p>Look again at the <em>Environment</em> pane. On the far right next to <code>redcart</code>, you will spot an icon that looks like a small table. Click on it to make the <em>Data Viewer</em> appear.</p>
-<p>The <em>Data Viewer</em> is built into the Posit IDE as a handy way explore tibbles.</p>
-<p>Go ahead an explore <code>redcart</code> to confirm the following features of the supertibble:</p>
-<ol type="1">
-<li>Each row represents a REDCap instrument.</li>
-<li>In addition to the instrument’s name, useful instrument-level metadata is shown here.</li>
-<li>The <code>redcap_data</code> column contains tibbles (note the little table icons!)</li>
-<li>By clicking on a tibble object inside the <code>redcap_data</code> column you can <em>drill down</em> and view the data stored in a specific REDCap instrument.</li>
-</ol>
-<p>Without writing any code, just by working in the <em>Data Viewer</em>, try to answer the following questions:</p>
-<ol type="1">
-<li><p>How many instruments are in the <code>redcart</code> database?</p></li>
-<li><p>How many rows are in the <code>demographics</code> table?</p></li>
-<li><p>Is the <code>consent</code> instrument repeating or nonrepeating? How can you tell? Why or why not?</p></li>
-<li><p>Drill down into the <code>demographics</code> instrument. How many patients are captured in here? Who is the oldest patient on the trial?</p></li>
-</ol>
-<p><strong>NOTE: Studies have shown that explaining material you just learned to others can boost memory. So if you’re done early, you might want to get up and help out others! :)</strong></p>
+<section id="peek-at-variables-events-instruments" class="level3">
+<h3 class="anchored" data-anchor-id="peek-at-variables-events-instruments">Peek at Variables, Events, &amp; Instruments</h3>
+<p>Here’s a project of fake data that Stephan created to mimic the CAR-T investigation. The first snippet reveals info from the 368 variables.<br>
+The second reveals info about the combinations of events &amp; instruments.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_metadata_read</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The data dictionary describing 368 fields was read from REDCap in 0.6 seconds.  The http status code was 200.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 368 × 18
+   field_name                    form_name section_header field_type field_label
+   &lt;chr&gt;                         &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;      
+ 1 infseq_id                     infusion… &lt;NA&gt;           text       "&lt;div clas…
+ 2 infseq_number                 infusion… &lt;NA&gt;           calc       "Infusion …
+ 3 infseq_number_retreatment     infusion… &lt;NA&gt;           calc       "Retreatme…
+ 4 infseq_infusion_dtxt          infusion… &lt;NA&gt;           descripti… "&lt;div clas…
+ 5 infseq_primary_label          infusion… &lt;NA&gt;           descripti… "Please co…
+ 6 infseq_reinfusion1_label      infusion… &lt;NA&gt;           descripti… "Please co…
+ 7 infseq_reinfusion2_label      infusion… &lt;NA&gt;           descripti… "Please co…
+ 8 infseq_reinfusion3_label      infusion… &lt;NA&gt;           descripti… "Please co…
+ 9 infseq_retreatment1_primary_… infusion… &lt;NA&gt;           descripti… "Please co…
+10 infseq_retreatment1_reinfusi… infusion… &lt;NA&gt;           descripti… "Please co…
+# ℹ 358 more rows
+# ℹ 13 more variables: select_choices_or_calculations &lt;chr&gt;, field_note &lt;chr&gt;,
+#   text_validation_type_or_show_slider_number &lt;chr&gt;,
+#   text_validation_min &lt;chr&gt;, text_validation_max &lt;chr&gt;, identifier &lt;chr&gt;,
+#   branching_logic &lt;chr&gt;, required_field &lt;chr&gt;, custom_alignment &lt;chr&gt;,
+#   question_number &lt;chr&gt;, matrix_group_name &lt;chr&gt;, matrix_ranking &lt;chr&gt;,
+#   field_annotation &lt;chr&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_event_instruments</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>107 event instrument metadata records were read from REDCap in 0.5 seconds.  The http status code was 200.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 107 × 3
+   arm_num unique_event_name        form                      
+     &lt;int&gt; &lt;chr&gt;                    &lt;chr&gt;                     
+ 1       1 infusion_sequence_arm_1  infusion_sequence         
+ 2       1 screening__enrollm_arm_1 demographics              
+ 3       1 screening__enrollm_arm_1 cohort_phase_assignment   
+ 4       1 screening__enrollm_arm_1 medical_history           
+ 5       1 screening__enrollm_arm_1 diagnosis_extent_of_cancer
+ 6       1 screening__enrollm_arm_1 eligibility               
+ 7       1 screening__enrollm_arm_1 consent                   
+ 8       1 screening__enrollm_arm_1 physical_exam             
+ 9       1 screening__enrollm_arm_1 vital_signs               
+10       1 screening__enrollm_arm_1 hematology                
+# ℹ 97 more rows</code></pre>
+</div>
+</div>
+<p>If important details are obscured, use <code>View()</code> to see things in a nice scrollable table inside RStudio:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_metadata_read</span>( </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    credential<span class="sc">$</span>redcap_uri, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    credential<span class="sc">$</span>token </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 </section>
 
 </main>
