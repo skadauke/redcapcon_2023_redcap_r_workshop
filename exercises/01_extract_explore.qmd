@@ -6,7 +6,7 @@ editor: visual
 
 ## Extracting Data from REDCap using REDCapTidieR
 
-In this exercise, we will download REDCap data using REDCapTidier (as opposed to REDCapR) and then explore that data.
+In this exercise, we will download REDCap data using REDCapTidier (as opposed to REDCapR) and then explore that data using the Posit IDE.
 
 The following code chunk loads the REDCapTidieR package and then uses the `read_redcap()` function to extract data from a REDCap database into an object named `redcart`.
 
@@ -19,7 +19,7 @@ creds <- retrieve_credential_local("../data-private/credentials.csv", 1)
 uri <- creds$uri
 token <- creds$token
 
-# Read the CAR-T cell REDCap data into an object "redcart"
+# Read the CAR-T cell REDCap data into an object named "redcart"
 redcart <- read_redcap(redcap_uri, token)
 
 # Show me redcart!
