@@ -58,3 +58,78 @@ View(
 ```
 
 ![Variable information](images/view-dictionary.png)
+
+### Download Records with a clean grain, part #1
+
+Downloading records from REDCap is easy for classic projects (ie, non-longitudinal & non-repeating).
+Just pass the url & token to [`REDCapR::redcap_read()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html).
+
+```r
+ds <-
+  REDCapR::redcap_read(
+    redcap_uri  = credential$redcap_uri,
+    token       = credential$token
+  )$data
+```
+
+You can also specify constraints like forms, fields, & events for dataset that's tight and relevant.
+
+
+```{r}
+ds_pt <-
+  REDCapR::redcap_read(
+    redcap_uri  = credential$redcap_uri,
+    token       = credential$token,
+    # forms       = c("infusion_sequence", "demographics"),
+    fields      = c("infseq_id", "demo_mrn", "demo_birth_date", "demo_age"),
+    events      = "screening__enrollm_arm_1",
+    verbose     = FALSE
+  )$data
+  
+# View(ds_pt)
+```
+
+![Patient-level records](images/view-pt.png)
+
+
+### Download Records with a dirty grain
+
+```{r}
+ds_mishmash <-
+  REDCapR::redcap_read(
+    redcap_uri  = credential$redcap_uri,
+    token       = credential$token,
+    verbose     = FALSE
+  )$data
+```
+
+![Mishmash grain](images/view-mishmash.png)
+
+### Download Records with a clean grain, part #2
+
+```{r}
+ds_med <-
+  REDCapR::redcap_read(
+    redcap_uri    = credential$redcap_uri,
+    token         = credential$token,
+    fields        = c("medhx_conditionhx", "medhx_start_date", "medhx_grade_1"),
+    events        = "screening__enrollm_arm_1",
+    filter_logic  = "[medhx_conditionhx] != ''",
+    verbose       = FALSE
+  )$data
+
+ds_med |>
+  dplyr::select(
+    infseq_id,
+    # redcap_event_name,
+    # redcap_repeat_instrument,
+    med_instance  = redcap_repeat_instance,
+    condition_hx  = medhx_conditionhx,
+    start_date    = medhx_start_date,
+    grade_1       = medhx_grade_1
+  ) |>
+  dplyr::mutate(
+    med_instance  = as.integer(med_instance),
+    grade_1       = as.integer(grade_1),
+  )
+```

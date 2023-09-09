@@ -167,7 +167,7 @@ $comment
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>107 event instrument metadata records were read from REDCap in 0.5 seconds.  The http status code was 200.</code></pre>
+<pre><code>107 event instrument metadata records were read from REDCap in 0.6 seconds.  The http status code was 200.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 107 × 3
@@ -198,6 +198,95 @@ $comment
 <p><img src="images/view-dictionary.png" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">Variable information</figcaption>
 </figure>
+</div>
+</section>
+<section id="download-records-with-a-clean-grain-part-1" class="level3">
+<h3 class="anchored" data-anchor-id="download-records-with-a-clean-grain-part-1">Download Records with a clean grain, part #1</h3>
+<p>Downloading records from REDCap is easy for classic projects (ie, non-longitudinal &amp; non-repeating). Just pass the url &amp; token to <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html"><code>REDCapR::redcap_read()</code></a>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ds <span class="ot">&lt;-</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can also specify constraints like forms, fields, &amp; events for dataset that’s tight and relevant.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ds_pt <span class="ot">&lt;-</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># forms       = c("infusion_sequence", "demographics"),</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">fields      =</span> <span class="fu">c</span>(<span class="st">"infseq_id"</span>, <span class="st">"demo_mrn"</span>, <span class="st">"demo_birth_date"</span>, <span class="st">"demo_age"</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">events      =</span> <span class="st">"screening__enrollm_arm_1"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co"># View(ds_pt)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/view-pt.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Patient-level records</figcaption>
+</figure>
+</div>
+</section>
+<section id="download-records-with-a-dirty-grain" class="level3">
+<h3 class="anchored" data-anchor-id="download-records-with-a-dirty-grain">Download Records with a dirty grain</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ds_mishmash <span class="ot">&lt;-</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/view-mishmash.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Mishmash grain</figcaption>
+</figure>
+</div>
+</section>
+<section id="download-records-with-a-clean-grain-part-2" class="level3">
+<h3 class="anchored" data-anchor-id="download-records-with-a-clean-grain-part-2">Download Records with a clean grain, part #2</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ds_med <span class="ot">&lt;-</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">redcap_uri    =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">token         =</span> credential<span class="sc">$</span>token,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fields        =</span> <span class="fu">c</span>(<span class="st">"medhx_conditionhx"</span>, <span class="st">"medhx_start_date"</span>, <span class="st">"medhx_grade_1"</span>),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">events        =</span> <span class="st">"screening__enrollm_arm_1"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">filter_logic  =</span> <span class="st">"[medhx_conditionhx] != ''"</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>ds_med <span class="sc">|&gt;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">infseq_id     =</span> infseq_id,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">med_instance  =</span> redcap_repeat_instance,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">condition_hx  =</span> medhx_conditionhx,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">start_date    =</span> medhx_start_date,</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">grade_1       =</span> medhx_grade_1</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">med_instance  =</span> <span class="fu">as.integer</span>(med_instance),</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">grade_1       =</span> <span class="fu">as.integer</span>(grade_1),</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11 × 5
+   infseq_id     med_instance condition_hx           start_date grade_1
+   &lt;chr&gt;                &lt;int&gt; &lt;chr&gt;                  &lt;date&gt;       &lt;int&gt;
+ 1 REDCART-003.0            1 Pneumonia              2023-01-01       2
+ 2 REDCART-012.0            1 Tachycardia            2020-01-03       5
+ 3 REDCART-012.0            2 History of Anxiety     2020-02-11       2
+ 4 REDCART-014.0            1 Hodgkin Lymphoma       2022-03-15       5
+ 5 REDCART-014.0            2 Anxiety and depression 2022-04-05       4
+ 6 REDCART-014.0            3 Comments               2022-04-13       3
+ 7 REDCART-022.0            1 Conditions listed      2022-04-13       2
+ 8 REDCART-022.0            2 Conditions listed      NA               2
+ 9 REDCART-022.0            3 Conditions listed      2022-04-13       5
+10 REDCART-222.0            1 fdhgdf                 2022-11-09       4
+11 REDCART-903.0            1 rash                   NA               4</code></pre>
+</div>
 </div>
 </section>
 </section>
