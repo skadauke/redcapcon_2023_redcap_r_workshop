@@ -4,26 +4,53 @@ format: html
 editor: visual
 ---
 
+## Fevers after CAR-T infusion?
+
+Your study PI wants to know if any of the patients have developed a fevers during the first hour after their CAR-T cell infusion. Fevers can be the first sign of cytokine release syndrome, a significant complication of CAR-T cell therapy. Temperature measurements after infusion are stored in the `infusion_vital_signs` instrument. Our goal will be to extract these temperature measurements and then use ggplot to draw temperature curves for each patient.
+
+Let's take a look at the infusion vitals table. We can use the `extract_tibble()` function to extract a data tibble from `redcart`. Fill in the blank below to extract the `infusion_vital_signs` tibble.
+
+Hint: make sure to put `infusion_vital_signs` in quotes!
+
+```{r}
+infusion_vitals <- extract_tibble(______)
+```
+
+Take a look at the `infusion_vitals` tibble. You will notice that it is in **wide format** with one row per infused patient. However to use ggplot we will need to reshape the data into **long** format.
+
+In addition, there are some columns we don't need. And we have to remove any data that don't reflect temperatures after infusion.
+
+We can use a single tidyverse pipeline to accomplish all of that! Read the comments for hints to fill in the blanks.
+
 ```{r}
 library(tidyverse)
 
-infusion_vitals <- redcart |>
-  extract_tibble("infusion_vital_signs") |>
-  select(-infusion_vitals_comments, -redcap_event, -form_status_complete) |>
+# Start by plugging in the "infusion_vitals" tibble we just created
+temperatures <- ______ |>
+  # Drop a few columns. Note we use "-" before each column name to drop.
+  ______(-infusion_vitals_comments, -redcap_event, -form_status_complete) |>
+  # This next operation turns a wide data into long form. 
+  # Don't worry about this one, it's out of scope for today's session! :)
   pivot_longer(starts_with("infusion_vitals_")) |>
-  filter(stringr::str_detect(name, "_post_temp_")) |>
-  mutate(time = name |> 
+  # Keep only the rows that have "_post_temp_" in the name
+  ______(stringr::str_detect(name, "_post_temp_")) |>
+  # Create a new variable "temperature" based on info the "name" column
+  mutate(______ = name |> 
            str_remove("infusion_vitals_post_temp_") |>
            as.integer() * 15
   ) |>
   rename(temperature = value) |>
-  select(-name)
+  # Finally, remove the "name" column because we don't need it anymore
+  ______(-name)
+
 ```
+
+Next let's create the temperature curves by plugging `temperatures` into ggplot! We will want to map the `x` axis to `time` and the `y` axis to `temperature`. The geom function to make a line graph is `geom_line()`. Fill in the blanks!
 
 ```{r}
 ggplot(
-  data = infusion_vitals, 
-  aes(x = time, y = temperature, color = infseq_id)
+  data = _____, 
+  aes(x = ______, y = ______, color = infseq_id)
 ) + 
-  geom_line()
+  geom______()
 ```
