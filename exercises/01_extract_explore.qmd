@@ -4,71 +4,35 @@ format: html
 editor: visual
 ---
 
-## Extracting Data from REDCap using REDCapR
+## Extracting Data from REDCap using REDCapTidieR
 
-For the first 10 min, we will download REDCap data using [REDCapR](https://ouhscbbmc.github.io/REDCapR).
-
-
-### Install latest version of REDCapR
-
-Let's install with the newest version of REDCapR from GitHub.
+In this exercise, we will download REDCap data using REDCapTidier (as opposed to REDCapR) and then explore that data using the Posit IDE.
 
 ```{r}
-if (packageVersion("REDCapR") < "1.1.9005") {
-  install.packages("remotes")
-  remotes::install_github("OuhscBbmc/REDCapR")
-}
-```
+library(REDCapTidieR)
 
-### Retrieve Secure Token
+# Load credentials from CSV file
+creds <- REDCapR::retrieve_credential_local("../data-private/credentials.csv", 1)
 
-We'll discuss tokens in more depth at the end of the workshop.
-For now, know that a "token" is a secret value that serves as your personal password to a specific REDCap project.
+uri <- creds$redcap_uri
+token <- creds$token
 
-```{r}
-path_credential <- "../data-private/credentials.csv"
-# path_credential <- "redcapcon_2023_redcap_r_workshop/data-private/credentials.csv"
-credential  <- REDCapR::retrieve_credential_local(path_credential, 1L)
-credential
-```
+# Read the CAR-T cell REDCap data into an object named "redcart"
+redcart <- read_redcap(uri, token)
 
-### Peek at Variables, Events, & Instruments
-
-Here's a project of fake data that Stephan created to mimic the CAR-T investigation.
-The first snippet reveals info from the 368 variables.  
-The second reveals info about the combinations of events & instruments.
-
-```{r}
-REDCapR::redcap_metadata_read(
-  redcap_uri  = credential$redcap_uri,
-  token       = credential$token
-)$data
-
-REDCapR::redcap_event_instruments(
-  redcap_uri  = credential$redcap_uri,
-  token       = credential$token
-)$data
-```
-
-If important details are obscured, 
-use `View()` to see things in a nice scrollable table inside RStudio:
-
-```r
-View(REDCapR::redcap_metadata_read(
-  redcap_uri  = credential$redcap_uri,
-  token       = credential$token
-)$data)
+# Show me redcart!
+redcart
 ```
 
 ## Exploring the REDCapTidieR Supertibble
 
-Take a look at the *Environments* pane to the right. Note that there is an object named `redcart`. This is the **supertibble** you just created inside of R's memory. (If you don't see `redcart`, try running the code chunk above again).
+Take a look at the *Environment* pane to the right. Note that there is an object named `redcart`. This is the **supertibble** you just created inside of R's memory. (If you don't see `redcart`, try running the code chunk above again).
 
-A **tibble** (or **data frame**) is a tabular data structure with rows and columns. A **supertibble** is a tibble that contains tibbles.
+A **tibble** (or **data frame**) is a tabular data structure with rows and columns, similar to a SQL database or an Excel sheet. A **supertibble** is a tibble that contains tibbles.
 
-On the far right next to `redcart`, you will spot an icon that looks like a small table. Click on it to make the *Data Viewer* appear.
+Look again at the *Environment* pane. On the far right next to `redcart`, you will spot an icon that looks like a small table. Click on it to make the *Data Viewer* appear.
 
-The *Data Viewer* is built into the Posit IDE as a handy as to explore data tables.
+The *Data Viewer* is built into the Posit IDE as a handy way explore tibbles.
 
 Go ahead an explore `redcart` to confirm the following features of the supertibble:
 
@@ -77,7 +41,7 @@ Go ahead an explore `redcart` to confirm the following features of the supertibb
 3.  The `redcap_data` column contains tibbles (note the little table icons!)
 4.  By clicking on a tibble object inside the `redcap_data` column you can *drill down* and view the data stored in a specific REDCap instrument.
 
-Without writing any code, just by working with the *Data Viewer*, try to answer the following questions:
+Without writing any code, just by working in the *Data Viewer*, try to answer the following questions:
 
 1.  How many instruments are in the `redcart` database?
 
@@ -87,4 +51,4 @@ Without writing any code, just by working with the *Data Viewer*, try to answer 
 
 4.  Drill down into the `demographics` instrument. How many patients are captured in here? Who is the oldest patient on the trial?
 
-Studies have shown that explaining material you just learned to others can boost memory. So if you're done early, you might want to get up and help out others! :)
+**NOTE: Studies have shown that explaining material you just learned to others can boost memory. So if you're done early, you might want to get up and help out others! :)**

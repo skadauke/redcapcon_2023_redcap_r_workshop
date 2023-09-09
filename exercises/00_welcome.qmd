@@ -23,10 +23,10 @@ The following code chunk will connect to a REDCap database and download its data
 ```{r}
 library(REDCapR)
 
-redcap_uri <- "https://redcap.chop.edu/api/"
+creds <- retrieve_credential_local("../data-private/credentials.csv", 1)
 
-## TODO: use a secure creds file instead of hardcoding this
-token <- "37BCFC38D45F10C47EAF4D8B97BFC32F"
+uri <- creds$uri
+token <- creds$token
 
 ## TODO: Right now this has lots of empty rows. Come up with a better solution. Maybe download from a different, simpler database?
 my_redcap_data <- redcap_read_oneshot(redcap_uri, token, forms = "demographics")$data
