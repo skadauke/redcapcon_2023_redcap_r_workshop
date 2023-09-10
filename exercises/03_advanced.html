@@ -318,9 +318,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="bad-options" class="level2">
 <h2 class="anchored" data-anchor-id="bad-options">Bad Options</h2>
 <ol type="1">
-<li><p>Harded-coded.<br>
-Fails all three goals<br>
-It’s appropriate for only demo projects without PHI.</p>
+<li><p>Harded-coded. Fails all three goals. It’s appropriate for only demo projects without PHI.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>uri     <span class="ot">&lt;-</span> <span class="st">"https://bbmc.ouhsc.edu/redcap/api/"</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>token   <span class="ot">&lt;-</span> <span class="st">"9A81268476645C4E5F03428B8AC3AA7B"</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_dag_read</span>(<span class="at">redcap_uri=</span>uri, <span class="at">token=</span>token)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
@@ -331,12 +329,24 @@ It’s appropriate for only demo projects without PHI.</p>
 <h2 class="anchored" data-anchor-id="good-options">Good Options</h2>
 <ol type="1">
 <li><p>Save credentials in an unsecured file. Then use something like</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>credential <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(path_credential, 1L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Environmental variables. But they’re more difficult for reproducible research.</p></li>
-<li><p>Keyring package solutions.</p></li>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>credential <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(path_credential, 18L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Environmental variables. But they’re more difficult for portability &amp; reproducibilty.</p></li>
+<li><p>Keyring package solutions. Good for security &amp; audits, but doesn’t scale well across lots of projects &amp; users.</p></li>
 <li><p>Token Server. Is my preference, but it takes a few hours to establish. It leverages a separate database’s connection with Active Directory (ie, “integrated security”). Users never have to manually save or retrieve tokens as long as they’re on the same network as the “token server” database.</p></li>
 </ol>
 </section>
+</section>
+<section id="other-packages-in-the-redcap-ecosystem" class="level1">
+<h1>Other Packages in the REDCap Ecosystem</h1>
+<p>REDCapR &amp; REDCapTidier are just of of 10+ actively-developed packages.</p>
+<p><a href="https://redcap-tools.github.io/projects/">REDCap Tools</a> (redcap-tools.github.io/projects/) was created by a people to help inventory the evolving list of packages.</p>
+<p>The most relevant to this audience include</p>
+<ul>
+<li>redcapAPI for R: –recently handed from Ben Nutter to Vandy developers)</li>
+<li>TidyREDCap for R: –Raymond Balise of U Miami has fxs for scenarios we haven’t discussed today)</li>
+<li>PyCap: similar goals as REDCapR –maintained by Paul Widenhaim of CHOP)</li>
+<li>PHPCap: more focused on server tasks –maintained by Jim Mullen &amp; Andy Arenson of U Indiana</li>
+</ul>
 </section>
 
 </main>

@@ -360,8 +360,8 @@ Three goals, in descending priority:
 Bad Options
 --------------------
 
-1. Harded-coded.  
-   Fails all three goals  
+1. Harded-coded.
+   Fails all three goals.
    It's appropriate for only demo projects without PHI.
   
    ```r
@@ -375,12 +375,11 @@ Bad Options
 Good Options
 --------------------
 
-
 1. Save credentials in an unsecured file.
    Then use something like
    
    ```r
-   credential <- REDCapR::retrieve_credential_local(path_credential, 1L)
+   credential <- REDCapR::retrieve_credential_local(path_credential, 18L)
    ```
    
 1. Environmental variables.
@@ -396,3 +395,18 @@ Good Options
    Users never have to manually save or retrieve tokens as long as they're
    on the same network as the "token server" database.
 
+
+Other Packages in the REDCap Ecosystem
+===================================
+
+REDCapR & REDCapTidier are just of of 10+ actively-developed packages.
+
+[REDCap Tools](https://redcap-tools.github.io/projects/) (redcap-tools.github.io/projects/)
+was created by a people to help inventory the evolving list of packages.
+
+The most relevant to this audience include
+
+* redcapAPI for R: --recently handed from Ben Nutter to Vandy developers)
+* TidyREDCap for R: --Raymond Balise of U Miami has fxs for scenarios we haven't discussed today)
+* PyCap: similar goals as REDCapR --maintained by Paul Widenhaim of CHOP)
+* PHPCap: more focused on server tasks --maintained by Jim Mullen & Andy Arenson of U Indiana 
