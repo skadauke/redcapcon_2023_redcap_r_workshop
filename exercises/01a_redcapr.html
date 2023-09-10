@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>01a_redcapr</title>
+<title>Extracting Data from REDCap using REDCapR</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">01a_redcapr</h1>
+<h1 class="title">Extracting Data from REDCap using REDCapR</h1>
 </div>
 
 
@@ -94,8 +94,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="extracting-data-from-redcap-using-redcapr" class="level2">
-<h2 class="anchored" data-anchor-id="extracting-data-from-redcap-using-redcapr">Extracting Data from REDCap using REDCapR</h2>
 <p>For the first 10 min, we will download data using <a href="https://ouhscbbmc.github.io/REDCapR">REDCapR</a>. Let’s install with the newest version of REDCapR from GitHub.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">packageVersion</span>(<span class="st">"REDCapR"</span>) <span class="sc">&lt;</span> <span class="st">"1.1.9005"</span>) {</span>
@@ -103,8 +101,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"OuhscBbmc/REDCapR"</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="retrieve-secure-token" class="level3">
-<h3 class="anchored" data-anchor-id="retrieve-secure-token">Retrieve Secure Token</h3>
+<section id="retrieve-secure-token" class="level2">
+<h2 class="anchored" data-anchor-id="retrieve-secure-token">Retrieve Secure Token</h2>
 <p>We’ll discuss tokens in more depth at the end of the workshop. For now, know that a “token” is a secret value that serves as your personal password to a specific REDCap project. We’ll retrieve it from a file stored in a (pretend) secured directory.</p>
 <!-- path_credential <- "redcapcon_2023_redcap_r_workshop/data-private/credentials.csv" -->
 <div class="cell">
@@ -129,8 +127,8 @@ $comment
 </div>
 </div>
 </section>
-<section id="peek-at-variables-events-instruments" class="level3">
-<h3 class="anchored" data-anchor-id="peek-at-variables-events-instruments">Peek at Variables, Events, &amp; Instruments</h3>
+<section id="peek-at-variables-events-instruments" class="level2">
+<h2 class="anchored" data-anchor-id="peek-at-variables-events-instruments">Peek at Variables, Events, &amp; Instruments</h2>
 <p>Stephan created fake data that mimics the real CAR-T investigation. The first snippet reveals info from the 368 variables. The second reveals info about the combinations of events &amp; instruments.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_metadata_read</span>(</span>
@@ -138,7 +136,7 @@ $comment
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>The data dictionary describing 368 fields was read from REDCap in 1.1 seconds.  The http status code was 200.</code></pre>
+<pre><code>The data dictionary describing 368 fields was read from REDCap in 1.2 seconds.  The http status code was 200.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 368 × 18
@@ -167,7 +165,7 @@ $comment
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>107 event instrument metadata records were read from REDCap in 0.7 seconds.  The http status code was 200.</code></pre>
+<pre><code>107 event instrument metadata records were read from REDCap in 1.0 seconds.  The http status code was 200.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 107 × 3
@@ -200,15 +198,23 @@ $comment
 </figure>
 </div>
 </section>
-<section id="download-records-with-a-clean-grain-part-1" class="level3">
-<h3 class="anchored" data-anchor-id="download-records-with-a-clean-grain-part-1">Download Records with a clean grain, part #1</h3>
+<section id="data-frame-grain" class="level2">
+<h2 class="anchored" data-anchor-id="data-frame-grain">Data Frame Grain</h2>
+<p>All your operations are easier when you have a good understanding of the “grain” of each table/data.frame.</p>
+<p>A table’s grain is what each row represents.<br>
+If one row represents a distinct patient, the table’s grain is <em>patient</em>. If one row represents a single medication administered to a patient, the table’s grain is <em>medication</em>.</p>
+<p>If your data frame has a poorly defined grain you’ll probably corrupt your data, or at least force ugly &amp; brittle hacks into your code.</p>
+<p>Grain is so important that I usually my tables are named for it, such as <code>ds_pt</code> and <code>ds_med</code>. I like it on the forefront of my mind.</p>
+</section>
+<section id="download-records-with-a-clean-grain-part-1" class="level2">
+<h2 class="anchored" data-anchor-id="download-records-with-a-clean-grain-part-1">Download Records with a clean grain, part #1</h2>
 <p>Downloading records from REDCap is easy for classic projects (ie, non-longitudinal &amp; non-repeating). Just pass the url &amp; token to <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html"><code>REDCapR::redcap_read()</code></a>.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ds <span class="ot">&lt;-</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You can also specify constraints like forms, fields, &amp; events for dataset that’s tight and relevant.</p>
+<p>You can also specify constraints like forms, fields, &amp; events to make the dataset tight and relevant.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ds_pt <span class="ot">&lt;-</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
@@ -229,8 +235,8 @@ $comment
 </figure>
 </div>
 </section>
-<section id="download-records-with-a-dirty-grain" class="level3">
-<h3 class="anchored" data-anchor-id="download-records-with-a-dirty-grain">Download Records with a dirty grain</h3>
+<section id="download-records-with-a-dirty-grain" class="level2">
+<h2 class="anchored" data-anchor-id="download-records-with-a-dirty-grain">Download Records with a dirty grain</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ds_mishmash <span class="ot">&lt;-</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
@@ -246,8 +252,8 @@ $comment
 </figure>
 </div>
 </section>
-<section id="download-records-with-a-clean-grain-part-2" class="level3">
-<h3 class="anchored" data-anchor-id="download-records-with-a-clean-grain-part-2">Download Records with a clean grain, part #2</h3>
+<section id="download-records-with-a-clean-grain-part-2" class="level2">
+<h2 class="anchored" data-anchor-id="download-records-with-a-clean-grain-part-2">Download Records with a clean grain, part #2</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ds_med <span class="ot">&lt;-</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
@@ -290,7 +296,6 @@ $comment
 11 REDCART-903.0            1 rash                   NA               4</code></pre>
 </div>
 </div>
-</section>
 </section>
 
 </main>
