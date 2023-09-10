@@ -1,12 +1,12 @@
 ---
-title: "01a_redcapr"
+title: "03_advanced"
 format: html
 editor: visual
 ---
 
-## Extracting Data from REDCap using REDCapR
+## Advanced API Tasks REDCap using REDCapR
 
-For the first 10 min, we will download data using [REDCapR](https://ouhscbbmc.github.io/REDCapR). Let's install with the newest version of REDCapR from GitHub.
+To start this final section, we will upload data using [REDCapR](https://ouhscbbmc.github.io/REDCapR). Let's install with the newest version of REDCapR from GitHub.
 
 ```{r}
 if (packageVersion("REDCapR") < "1.1.9005") {
