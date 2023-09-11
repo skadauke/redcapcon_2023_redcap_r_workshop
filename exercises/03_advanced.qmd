@@ -399,14 +399,19 @@ Good Options
 Other Packages in the REDCap Ecosystem
 ===================================
 
-REDCapR & REDCapTidier are just of of 10+ actively-developed packages.
+[REDCapR](https://github.com/OuhscBbmc/REDCapR) & [REDCapTidier](https://github.com/CHOP-CGTInformatics/REDCapTidieR) are just of of 10+ actively-developed packages.
 
-[REDCap Tools](https://redcap-tools.github.io/projects/) (redcap-tools.github.io/projects/)
+[REDCap Tools](https://redcap-tools.github.io/projects/) (redcap-tools.github.io/)
 was created by a people to help inventory the evolving list of packages.
+Most people using the REDCap API are not REDCap admins, 
+so they don't have access to the Community forums.
 
-The most relevant to this audience include
+The most relevant packages to this audience include:
 
-* redcapAPI for R: --recently handed from Ben Nutter to Vandy developers)
-* TidyREDCap for R: --Raymond Balise of U Miami has fxs for scenarios we haven't discussed today)
-* PyCap: similar goals as REDCapR --maintained by Paul Widenhaim of CHOP)
-* PHPCap: more focused on server tasks --maintained by Jim Mullen & Andy Arenson of U Indiana 
+* [redcapAPI](https://github.com/nutterb/redcapAPI) for R: recently handed from Ben Nutter to Vandy developers
+* [tidyREDCap](https://github.com/raymondbalise/tidyREDCap) for R: Raymond Balise of U Miami has fxs for scenarios we haven't discussed today)
+* [REDCapDM](https://github.com/ubidi/REDCapDM) for R: --João Carmezim
+* [REDCap Custodian](https://github.com/ctsit/redcapcustodian/) for R: Philip Chase & Kyle Chesney of U Florida
+* [PyCap](https://github.com/redcap-tools/PyCap): similar goals as REDCapR --maintained by Paul Widenhaim of CHOP
+* [redcap-api](https://github.com/cctrbic/redcap-api) for C#: Michael Tran of VCU (inspired by Chris Nefcy)
+* [phpcap](https://github.com/iuredcap/phpcap): more focused on server tasks --maintained by Jim Mullen & Andy Arenson of U Indiana 
