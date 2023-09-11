@@ -8,7 +8,7 @@ editor: visual
 
 In this section, your challenge is to work with your small group to recreate the object shown below. This is a tibble with three columns derived from the `demographics` table. Use the empty code chunk to write the code to recreate this tibble.
 
-![](../images/recreate_tbl.png)
+![](../exercises/recreate_tbl.png)
 
 ```{r}
 # Your code here!

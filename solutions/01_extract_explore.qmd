@@ -43,12 +43,12 @@ Go ahead an explore `redcart` to confirm the following features of the supertibb
 
 Without writing any code, just by working in the *Data Viewer*, try to answer the following questions:
 
-1.  How many instruments are in the `redcart` database?
+1.  How many instruments are in the `redcart` database? **18**
 
-2.  How many rows are in the `demographics` table?
+2.  How many rows are in the `demographics` table? **14**
 
-3.  Is the `consent` instrument repeating or nonrepeating? How can you tell? Why or why not?
+3.  Is the `consent` instrument repeating or nonrepeating? How can you tell? Why or why not? **repeating - allows capturing re-consenting after consent version changes**
 
-4.  Drill down into the `demographics` instrument. How many patients are captured in here? Who is the oldest patient on the trial?
+4.  Drill down into the `demographics` instrument. How many patients are captured in here? Who is the oldest patient on the trial? **14 patients. Arya Stark is oldest.**
 
 **NOTE: Studies have shown that explaining material you just learned to others can boost memory. So if you're done early, you might want to get up and help out others! :)**
