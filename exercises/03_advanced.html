@@ -275,9 +275,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">validate_for_write</span>(ds_daily, <span class="at">convert_logical_to_integer =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>ds_daily</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="writing-repeating-instrument-variables" class="level2">
-<h2 class="anchored" data-anchor-id="writing-repeating-instrument-variables">Writing Repeating Instrument Variables</h2>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># daily-entire</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ds_daily <span class="sc">|&gt;</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_write</span>(</span>
@@ -319,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="token-security" class="level1">
 <h1>Token Security</h1>
-<p>Several good approaches exist for securely handling passwords. (Two years ago I started a group to catalog them, but then I dropped the ball.)</p>
+<p>Several good approaches exist for securely handling passwords. (Two years ago I started a <a href="https://github.com/vanderbilt-redcap/redcap-token-committee-private">group to catalog them</a>, but then I dropped the ball.)</p>
 <p>Talk with your institution’s IT Security team about options for your campus.</p>
 <p>Three goals, in descending priority:</p>
 <ol type="1">
@@ -343,8 +340,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Save credentials in an unsecured file. Then use something like</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>credential <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(path_credential, 18L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Environmental variables. But they’re more difficult for portability &amp; reproducibilty.</p></li>
-<li><p>Keyring package solutions. Good for security &amp; audits, but doesn’t scale well across lots of projects &amp; users.</p></li>
-<li><p>Token Server. Is my preference, but it takes a few hours to establish. It leverages a separate database’s connection with Active Directory (ie, “integrated security”). Users never have to manually save or retrieve tokens as long as they’re on the same network as the “token server” database.</p></li>
+<li><p><a href="https://CRAN.R-project.org/package=keyring">Keyring</a> package solutions. Good for security &amp; audits, but doesn’t scale well across lots of projects &amp; users.</p></li>
+<li><p><a href="https://ouhscbbmc.github.io/REDCapR/articles/SecurityDatabase.html">Token Server</a>. Is my preference, but it takes a few hours to establish. It leverages a separate database’s connection with Active Directory (ie, “integrated security”). Users never have to manually save or retrieve tokens as long as they’re on the same network as the “token server” database.</p></li>
 </ol>
 </section>
 </section>

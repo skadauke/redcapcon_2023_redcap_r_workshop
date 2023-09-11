@@ -224,7 +224,6 @@ ds_patient <-
 
 ![Codebook entry for Race](images/codebook-race.png)
 
-
 Write Entire Patient-level Table
 -------------------------
 
@@ -296,9 +295,6 @@ REDCapR::validate_for_write(ds_daily, convert_logical_to_integer = TRUE)
 
 ds_daily
 ```
-
-Writing Repeating Instrument Variables
--------------------------
 
 ```r
 # daily-entire
@@ -375,7 +371,9 @@ Token Security
 ===================================
 
 Several good approaches exist for securely handling passwords.
-(Two years ago I started a group to catalog them, but then I dropped the ball.)
+(Two years ago I started a 
+[group to catalog them](https://github.com/vanderbilt-redcap/redcap-token-committee-private),
+but then I dropped the ball.)
 
 Talk with your institution's IT Security team about options for your campus.
 
@@ -413,10 +411,10 @@ Good Options
 1. Environmental variables.
    But they're more difficult for portability & reproducibilty.
    
-1. Keyring package solutions.
+1. [Keyring](https://CRAN.R-project.org/package=keyring) package solutions.
    Good for security & audits, but doesn't scale well across lots of projects & users.
 
-1. Token Server.
+1. [Token Server](https://ouhscbbmc.github.io/REDCapR/articles/SecurityDatabase.html).
    Is my preference, but it takes a few hours to establish.
    It leverages a separate database's connection with Active Directory
    (ie, "integrated security").
