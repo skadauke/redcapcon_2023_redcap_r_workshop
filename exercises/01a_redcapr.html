@@ -103,7 +103,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="retrieve-secure-token" class="level2">
 <h2 class="anchored" data-anchor-id="retrieve-secure-token">Retrieve Secure Token</h2>
-<p>We’ll discuss tokens in more depth at the end of the workshop. For now, know that a “token” is a secret value that serves as your personal password to a specific REDCap project. We’ll retrieve it from a file stored in a (pretend) secured directory.</p>
+<p>We’ll discuss token approaches at the end of the deep dive. For now, know that a “token” is a secret value that serves as your personal password to a specific REDCap project. We’ll retrieve it from a file stored in a (pretend) secured directory.</p>
 <!-- path_credential <- "redcapcon_2023_redcap_r_workshop/data-private/credentials.csv" -->
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>path_credential <span class="ot">&lt;-</span> <span class="st">"../data-private/credentials.csv"</span></span>
@@ -136,7 +136,7 @@ $comment
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>The data dictionary describing 368 fields was read from REDCap in 1.2 seconds.  The http status code was 200.</code></pre>
+<pre><code>The data dictionary describing 368 fields was read from REDCap in 4.3 seconds.  The http status code was 200.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 368 × 18
@@ -165,7 +165,7 @@ $comment
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>107 event instrument metadata records were read from REDCap in 1.0 seconds.  The http status code was 200.</code></pre>
+<pre><code>107 event instrument metadata records were read from REDCap in 0.9 seconds.  The http status code was 200.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 107 × 3
@@ -203,7 +203,7 @@ $comment
 <p>All your operations are easier when you have a good understanding of the “grain” of each table/data.frame.</p>
 <p>A table’s grain is what each row represents.<br>
 If one row represents a distinct patient, the table’s grain is <em>patient</em>. If one row represents a single medication administered to a patient, the table’s grain is <em>medication</em>.</p>
-<p>If your data frame has a poorly defined grain you’ll probably corrupt your data, or at least force ugly &amp; brittle hacks into your code.</p>
+<p>If your R data frame has a poorly defined grain you’ll probably corrupt your data, or at least force ugly &amp; brittle hacks into your code.</p>
 <p>Grain is so important that I usually my tables are named for it, such as <code>ds_pt</code> and <code>ds_med</code>. I like it on the forefront of my mind.</p>
 </section>
 <section id="download-records-with-a-clean-grain-part-1" class="level2">
