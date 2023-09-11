@@ -28,11 +28,11 @@ redcart
 
 Take a look at the *Environment* pane to the right. Note that there is an object named `redcart`. This is the **supertibble** you just created inside of R's memory. (If you don't see `redcart`, try running the code chunk above again).
 
-A **tibble** (or **data frame**) is a tabular data structure with rows and columns, similar to a SQL database or an Excel sheet. A **supertibble** is a tibble that contains tibbles.
+A **tibble** (or **data frame**) is a tabular data structure with rows and columns, similar to a SQL database or an Excel sheet. A **supertibble** is a tibble that contains tibbles. This is a special data structure that is useful to represent a REDCap project.
 
-Look again at the *Environment* pane. On the far right next to `redcart`, you will spot an icon that looks like a small table. Click on it to make the *Data Viewer* appear.
+Look again at the *Environment* pane. On the far right next to `redcart`, you will spot an small icon that looks like a table. Click on it to make the *Data Viewer* appear.
 
-The *Data Viewer* is built into the Posit IDE as a handy way explore tibbles.
+The *Data Viewer* is a handy way to explore tibble built into the Posit IDE.
 
 Go ahead an explore `redcart` to confirm the following features of the supertibble:
 
