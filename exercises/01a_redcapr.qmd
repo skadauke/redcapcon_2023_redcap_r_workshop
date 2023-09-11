@@ -118,6 +118,8 @@ ds_pt <-
 Download Records with a dirty grain
 ----------------------------
 
+If you force a complex multidimensional structure into 2D rectangle, the rectangle won't be helpful.
+
 ```{r}
 ds_mishmash <-
   REDCapR::redcap_read(
@@ -131,6 +133,8 @@ ds_mishmash <-
 
 Download Records with a clean grain, part #2
 ----------------------------
+
+Ask REDCap for separate, focused rectangles.
 
 ```{r}
 ds_med <-
@@ -158,3 +162,6 @@ ds_med |>
     grade_1       = as.integer(grade_1),
   )
 ```
+
+Or let REDCapTidieR  do the dirty work...
+----------------------------

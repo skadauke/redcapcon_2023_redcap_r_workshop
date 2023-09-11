@@ -357,8 +357,18 @@ Three reasonable options when reading from REDCap are:
 1. Let [`readr::read_csv()`](https://readr.tidyverse.org/reference/read_delim.html)
    make it's best guess.
 
-1. Keep everything as a string/character, as it lives in `redcap_data`.
+1. Keep everything as a string/character, as it lives in `redcap_data`.  
+   The manually convert individual columns.
    
+   ```r
+   ds <-
+     ds |> 
+     dplyr::mutate(
+       age    = as.double(age),
+       sbp    = as.integer(sbp),
+       dbp    = as.integer(dbp),
+     )
+  ```
 
 1. Ask [`REDCapR::redcap_metadata_coltypes()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_metadata_coltypes.html) 
    to inspect project & variable settings to infer the likely type.

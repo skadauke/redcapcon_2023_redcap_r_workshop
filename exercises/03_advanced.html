@@ -309,7 +309,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Three reasonable options when reading from REDCap are:</p>
 <ol type="1">
 <li><p>Let <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>readr::read_csv()</code></a> make it’s best guess.</p></li>
-<li><p>Keep everything as a string/character, as it lives in <code>redcap_data</code>.</p></li>
+<li><p>Keep everything as a string/character, as it lives in <code>redcap_data</code>.<br>
+The manually convert individual columns.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ds <span class="ot">&lt;-</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  ds <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">age    =</span> <span class="fu">as.double</span>(age),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sbp    =</span> <span class="fu">as.integer</span>(sbp),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dbp    =</span> <span class="fu">as.integer</span>(dbp),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Ask <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_metadata_coltypes.html"><code>REDCapR::redcap_metadata_coltypes()</code></a> to inspect project &amp; variable settings to infer the likely type. Then pass this specification to <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html"><code>REDCapR::redcap_read()</code></a>’s <code>col_types</code> parameter, which is ultimately used by <code>readr::read_csv()</code>.</p>
 <img src="images/coltypes.png" class="img-fluid" alt="coltypes"></li>
 </ol>
@@ -328,9 +336,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="bad-options">Bad Options</h2>
 <ol type="1">
 <li><p>Harded-coded. Fails all three goals. It’s appropriate for only demo projects without PHI.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>uri     <span class="ot">&lt;-</span> <span class="st">"https://bbmc.ouhsc.edu/redcap/api/"</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>token   <span class="ot">&lt;-</span> <span class="st">"9A81268476645C4E5F03428B8AC3AA7B"</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_dag_read</span>(<span class="at">redcap_uri=</span>uri, <span class="at">token=</span>token)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>uri     <span class="ot">&lt;-</span> <span class="st">"https://bbmc.ouhsc.edu/redcap/api/"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>token   <span class="ot">&lt;-</span> <span class="st">"9A81268476645C4E5F03428B8AC3AA7B"</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_dag_read</span>(<span class="at">redcap_uri=</span>uri, <span class="at">token=</span>token)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Save credentials in an unsecured file</p></li>
 </ol>
 </section>
@@ -338,7 +346,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="good-options">Good Options</h2>
 <ol type="1">
 <li><p>Save credentials in an unsecured file. Then use something like</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>credential <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(path_credential, 18L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>credential <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(path_credential, 18L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Environmental variables. But they’re more difficult for portability &amp; reproducibilty.</p></li>
 <li><p><a href="https://CRAN.R-project.org/package=keyring">Keyring</a> package solutions. Good for security &amp; audits, but doesn’t scale well across lots of projects &amp; users.</p></li>
 <li><p><a href="https://ouhscbbmc.github.io/REDCapR/articles/SecurityDatabase.html">Token Server</a>. Is my preference, but it takes a few hours to establish. It leverages a separate database’s connection with Active Directory (ie, “integrated security”). Users never have to manually save or retrieve tokens as long as they’re on the same network as the “token server” database.</p></li>

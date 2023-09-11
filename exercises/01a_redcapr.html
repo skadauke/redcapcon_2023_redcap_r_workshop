@@ -136,7 +136,7 @@ $comment
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>The data dictionary describing 368 fields was read from REDCap in 4.3 seconds.  The http status code was 200.</code></pre>
+<pre><code>The data dictionary describing 368 fields was read from REDCap in 1.4 seconds.  The http status code was 200.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 368 × 18
@@ -165,7 +165,7 @@ $comment
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>107 event instrument metadata records were read from REDCap in 0.9 seconds.  The http status code was 200.</code></pre>
+<pre><code>107 event instrument metadata records were read from REDCap in 1.2 seconds.  The http status code was 200.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 107 × 3
@@ -237,6 +237,7 @@ If one row represents a distinct patient, the table’s grain is <em>patient</em
 </section>
 <section id="download-records-with-a-dirty-grain" class="level2">
 <h2 class="anchored" data-anchor-id="download-records-with-a-dirty-grain">Download Records with a dirty grain</h2>
+<p>If you force a complex multidimensional structure into 2D rectangle, the rectangle won’t be helpful.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ds_mishmash <span class="ot">&lt;-</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
@@ -254,6 +255,7 @@ If one row represents a distinct patient, the table’s grain is <em>patient</em
 </section>
 <section id="download-records-with-a-clean-grain-part-2" class="level2">
 <h2 class="anchored" data-anchor-id="download-records-with-a-clean-grain-part-2">Download Records with a clean grain, part #2</h2>
+<p>Ask REDCap for separate, focused rectangles.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ds_med <span class="ot">&lt;-</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
@@ -296,6 +298,9 @@ If one row represents a distinct patient, the table’s grain is <em>patient</em
 11 REDCART-903.0            1 rash                   NA               4</code></pre>
 </div>
 </div>
+</section>
+<section id="or-let-redcaptidier-do-the-dirty-work" class="level2">
+<h2 class="anchored" data-anchor-id="or-let-redcaptidier-do-the-dirty-work">Or let REDCapTidieR do the dirty work…</h2>
 </section>
 
 </main>
