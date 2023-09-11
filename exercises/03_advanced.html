@@ -305,6 +305,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you have trouble uploading, consider adding a few fake patients &amp; measurements and then download the csv. It might reveal something you didn’t anticipate. But be aware that it will be in the block matrix format (<em>i.e.</em>, everything jammed into one rectangle.)</p>
 </section>
 </section>
+<section id="column-types" class="level1">
+<h1>Column Types</h1>
+<p>The data type of each variable can make a big difference to the reliability of a script. REDCap’s underlying <code>redcap_data</code> table in MySQL/MariaDB is text. But analyses in R do better when they’re cast appropriately to numbers &amp; dates.</p>
+<p>If you’re doing basic analyses in R, you’ve probably used the <a href="https://readr.tidyverse.org/">readr</a> package to convert the text of a CSV to an R data frame. Under the hood, packages like REDCapR use readr to convert the text from REDCap to produce a data frame.</p>
+<p>Three reasonable options when reading from REDCap are:</p>
+<ol type="1">
+<li><p>Let <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>readr::read_csv()</code></a> make it’s best guess.</p></li>
+<li><p>Keep everything as a string/character, as it lives in <code>redcap_data</code>.</p></li>
+<li><p>Ask <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_metadata_coltypes.html"><code>REDCapR::redcap_metadata_coltypes()</code></a> to inspect project &amp; variable settings to infer the likely type. Then pass this specification to <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html"><code>REDCapR::redcap_read()</code></a>’s <code>col_types</code> parameter, which is ultimately used by <code>readr::read_csv()</code>.</p>
+<img src="images/coltypes.png" class="img-fluid" alt="coltypes"></li>
+</ol>
+</section>
 <section id="token-security" class="level1">
 <h1>Token Security</h1>
 <p>Several good approaches exist for securely handling passwords. (Two years ago I started a group to catalog them, but then I dropped the ball.)</p>
@@ -336,6 +348,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </section>
 </section>
+<section id="more-redcapr-documentation" class="level1">
+<h1>More REDCapR Documentation</h1>
+<p><a href="https://ouhscbbmc.github.io/" class="uri">https://ouhscbbmc.github.io/</a></p>
+<p>For a more thorough explanation of analytical approaches, go to REDCapR’s website. Including the 7 vignettes like</p>
+<ul>
+<li><a href="https://ouhscbbmc.github.io/REDCapR/articles/workflow-read.html">Typical REDCap Workflow for a Data Analyst</a>,</li>
+<li><a href="https://ouhscbbmc.github.io/REDCapR/articles/longitudinal-and-repeating.html">Retrieving Longitudinal and Repeating Structures</a>, and especially</li>
+<li><a href="https://ouhscbbmc.github.io/REDCapR/articles/TroubleshootingApiCalls.html">Troubleshooting REDCap API Calls</a>.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/redcapr-site.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">coltypes</figcaption>
+</figure>
+</div>
+</section>
 <section id="other-packages-in-the-redcap-ecosystem" class="level1">
 <h1>Other Packages in the REDCap Ecosystem</h1>
 <p><a href="https://github.com/OuhscBbmc/REDCapR">REDCapR</a> &amp; <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR">REDCapTidier</a> are just of of 10+ actively-developed packages.</p>
@@ -346,7 +374,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="https://github.com/raymondbalise/tidyREDCap">tidyREDCap</a> for R: Raymond Balise of U Miami has fxs for scenarios we haven’t discussed today)</li>
 <li><a href="https://github.com/ubidi/REDCapDM">REDCapDM</a> for R: –João Carmezim</li>
 <li><a href="https://github.com/ctsit/redcapcustodian/">REDCap Custodian</a> for R: Philip Chase &amp; Kyle Chesney of U Florida</li>
-<li><a href="https://github.com/redcap-tools/PyCap">PyCap</a>: similar goals as REDCapR –maintained by Paul Widenhaim of CHOP</li>
+<li><a href="https://github.com/redcap-tools/PyCap">PyCap</a>: similar goals as REDCapR –maintained by Paul Wildenhain of CHOP</li>
 <li><a href="https://github.com/cctrbic/redcap-api">redcap-api</a> for C#: Michael Tran of VCU (inspired by Chris Nefcy)</li>
 <li><a href="https://github.com/iuredcap/phpcap">phpcap</a>: more focused on server tasks –maintained by Jim Mullen &amp; Andy Arenson of U Indiana</li>
 </ul>
